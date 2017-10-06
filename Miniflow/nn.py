@@ -1,11 +1,6 @@
 """
-Check out the new network architecture and dataset!
-
-Notice that the weights and biases are
-generated randomly.
-
-No need to change anything, but feel free to tweak
-to test your network, play around with the epochs, batch size, etc!
+Training a 2 layered NN using Miniflow to predict the Bouston Housing
+prices
 """
 
 import numpy as np

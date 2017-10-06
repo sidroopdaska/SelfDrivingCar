@@ -1,3 +1,4 @@
+
 import numpy as np
 
 
@@ -11,8 +12,7 @@ class Node(object):
     """
     def __init__(self, inbound_nodes=[]):
         """
-        Node's constructor (runs when the object is instantiated). Sets
-        properties that all nodes need.
+        Node's constructor
         """
         # A list of nodes with edges into this node.
         self.inbound_nodes = inbound_nodes
@@ -21,8 +21,8 @@ class Node(object):
         self.value = None
         # A list of nodes that this node outputs to.
         self.outbound_nodes = []
-        # New property! Keys are the inputs to this node and
-        # their values are the partials of this node with
+        # Keys are the inputs to this node and
+        # their values are the gradients of the cost with
         # respect to that input.
         self.gradients = {}
         # Sets this node as an outbound node for all of
@@ -71,9 +71,10 @@ class Input(Node):
         for n in self.outbound_nodes:
             self.gradients[self] += n.gradients[self]
 
+
 class Linear(Node):
     """
-    Represents a node that performs a linear transform.
+    Represents a node that performs a linear transformation.
     """
     def __init__(self, X, W, b):
         # The base class (Node) constructor. Weights and bias
@@ -82,7 +83,7 @@ class Linear(Node):
 
     def forward(self):
         """
-        Performs the math behind a linear transform.
+        Performs Z = XW + b
         """
         X = self.inbound_nodes[0].value
         W = self.inbound_nodes[1].value
@@ -113,14 +114,11 @@ class Sigmoid(Node):
     Represents a node that performs the sigmoid activation function.
     """
     def __init__(self, node):
-        # The base class constructor.
+        # The base class' constructor.
         Node.__init__(self, [node])
 
     def _sigmoid(self, x):
         """
-        This method is separate from `forward` because it
-        will be used with `backward` as well.
-
         `x`: A numpy array-like object.
         """
         return 1. / (1. + np.exp(-x))
@@ -150,7 +148,6 @@ class MSE(Node):
     def __init__(self, y, a):
         """
         The mean squared error cost function.
-        Should be used as the last node for a network.
         """
         # Call the base class' constructor.
         Node.__init__(self, [y, a])
@@ -161,13 +158,7 @@ class MSE(Node):
         """
         # NOTE: We reshape these to avoid possible matrix/vector broadcast
         # errors.
-        #
-        # For example, if we subtract an array of shape (3,) from an array of shape
-        # (3,1) we get an array of shape(3,3) as the result when we want
-        # an array of shape (3,1) instead.
-        #
-        # Making both arrays (3,1) insures the result is (3,1) and does
-        # an elementwise subtraction as expected.
+
         y = self.inbound_nodes[0].value.reshape(-1, 1)
         a = self.inbound_nodes[1].value.reshape(-1, 1)
 
@@ -188,7 +179,8 @@ def topological_sort(feed_dict):
     """
     Sort the nodes in topological order using Kahn's Algorithm.
 
-    `feed_dict`: A dictionary where the key is a `Input` Node and the value is the respective value feed to that Node.
+    `feed_dict`: A dictionary where the key is an `Input` Node
+    and the value is the respective value fed to that Node.
 
     Returns a list of sorted nodes.
     """
@@ -239,7 +231,6 @@ def forward_and_backward(graph):
         n.forward()
 
     # Backward pass
-    # see: https://docs.python.org/2.3/whatsnew/section-slices.html
     for n in graph[::-1]:
         n.backward()
 
