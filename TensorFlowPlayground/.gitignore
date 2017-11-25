@@ -104,3 +104,4 @@ venv.bak/
 .mypy_cache/
 
 mnist_dataset/*
+.vscode/

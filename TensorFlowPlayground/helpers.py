@@ -25,7 +25,8 @@ class ModelTrainingLogger(object):
             plt.show(block=False)
 
     def update(self, epoch_i, loss, tr_acc, val_acc):
-        print(f"Epoch: {epoch_i}  Loss:{loss:.4f} Tr Accuracy: {tr_acc:.4f}  Val Accuracy: {val_acc:.4f}")
+        print("Epoch: {}  Loss: {:.4f} Tr Accuracy: {:.4f}  Val Accuracy: {:.4f}"
+              .format(epoch_i, loss, tr_acc, val_acc))
 
         if not self.use_learning_curves:
             return

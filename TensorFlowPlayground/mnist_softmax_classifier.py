@@ -66,4 +66,4 @@ with tf.Session() as session:
     test_accuracy = session.run(
             accuracy,
             feed_dict={features: test_images, labels: test_labels})
-    print(f"Test Accuracy: {test_accuracy}")
+    print("Test Accuracy: {}".format(test_accuracy))
