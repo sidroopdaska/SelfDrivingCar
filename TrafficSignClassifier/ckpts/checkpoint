@@ -1,2 +1,2 @@
-model_checkpoint_path: "model-10000-9773-1512087898.6379907"
-all_model_checkpoint_paths: "model-10000-9773-1512087898.6379907"
+model_checkpoint_path: "test"
+all_model_checkpoint_paths: "test"
