@@ -35,11 +35,11 @@ Following the data set summarisation, I performed exploratory visualizations of 
 
 * Plotting an image for each label from the training set. Some of these have been displayed below for convenience.
 
-<img src="./examples/training_set_images_sample.png" width="500" alt="Sample images from the training set" />
+<img src="./examples/training_set_images_sample.png" width="800" alt="Sample images from the training set" />
 
 * Ploting bar charts to see the image distribution across the training & validation sets.
 
-<img src="./examples/label_dist.png" width="500" alt="Label distribution" />
+<img src="./examples/label_dist.png" width="800" alt="Label distribution" />
 
 We notice that the distribution in training set *is not balanced*. We have some classes with less than 300 examples and other well represented with more than 1000 examples. A similar story is observed in the validation set distribution as showcased above.
 
@@ -87,6 +87,8 @@ Below is an example of a traffic sign image before and after the processing:
 <img src="./examples/preprocessing.png" width="240" />
 
 ### 3. Final model architecture
+
+<img src="./examples/lenet_modified.png" width="800" /> 
 
 The architecture of my final model is inspired by the model presented by Pierre Sermanet and Yann LeCun in their [paper](http://yann.lecun.com/exdb/publis/pdf/sermanet-ijcnn-11.pdf). 
 My model consisted of 3 CONV layers and 2 FC layers adding up to a total of 5 layers. Moreover, similar to the model presented by Sermanet and LeCun, my model also provides the classifier with different scales of receptive fields/ multi-scale features<sup>*</sup>. This is achieved by branching the output of the 1st CONV layer, performing a second round of subsampling and finally feeding it to the classifier in combination with the output from the 3rd CONV layer.
@@ -190,11 +192,15 @@ Changes made:
 In addition to evaluating the performance of my network over the test set, I decided to test how well the network classifies random traffic sign images pulled from the web.
 
 The following images were used:
+<br />
 <img src="./examples/prod_images.png" width="500" /> 
 
 and the result were as follows:
+<br />
 <img src="./examples/prod_images_pred1.png" width="250" /> 
+<br/>
 <img src="./examples/prod_images_pred2.png" width="250" /> 
+<br/>
 <img src="./examples/prod_images_pred3.png" width="250" /> 
 
 As showcased above the prediction accuracy was 100%! 
