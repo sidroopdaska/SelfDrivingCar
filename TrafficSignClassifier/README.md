@@ -5,9 +5,9 @@
 In this project, I developed a model using a Convolutional Neural Network (CNN) to classify traffic signs. The model was trained and validated using images from the [German Traffic Sign Dataset](http://benchmark.ini.rub.de/). After the model was trained, it's performance was evaulated on random traffic sign images found on the web.
 
 My final model results are as follows:
-* Training set accuracy of 99.90%
-* Validation set accuracy of 98.84% 
-* Test set accuracy of 97.29%
+* Training set accuracy of **99.90%**
+* Validation set accuracy of **98.84%**
+* Test set accuracy of **97.29%**
 * New Test set accuracy of 100% (6 new images)
 
 The steps undertaken in this project are as follows:
