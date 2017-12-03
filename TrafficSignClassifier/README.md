@@ -56,11 +56,15 @@ Given the small size of the training set and the uneven distribution of examples
 
 The additional benefit of the augmentation process was that it resulted in an *increase in the diversity* of the data consumed by the model for feature learning.
 
-Following the augmentation process, the size of the training set was 108242.
+Following the augmentation process, the size of the training set was 108,242. The class label distribution as a result has been visualised below.
 
+<img src="./examples/label_dist_aug.png" width="800" alt="Label distribution post data augmentation" />
+
+
+### 2. Pre-processing
 This phase is **crucial** to improving the performance of the model and also determines how quickily your model converges to a solution. My pre-processing pipeline did the following:
 
-* **RGB color space -> Grayscale**: The images were converted from their original RGB color space to Gray scale. This reduced the the numbers of channels in the input of the network and consequently the amount of memory required to represent these images. My basis for doing this was the observation that the image colors did not impart any additional information that could be leveraged by the network for the classification task.
+* **RGB color space -> Grayscale**: The images were converted from their original RGB color space to Gray scale. This reduced the the numbers of channels in the input of the network and consequently the amount of memory required to represent these images. My basis for doing this stemmed from the observation that the colors in the image did not impart any additional information that could be leveraged by the network for the classification task.
 * **Feature Scaling & Mean Normalisation**: I normalized each image to ensure it had a mean of 0 and standard deviation of 1, and,
 * **[Contrast Limited Adaptive Histogram Equalization](https://en.wikipedia.org/wiki/Adaptive_histogram_equalization) (CLAHE)**: I used this algorithm for its ability to amplify local details in areas that are darker or lighter than most of the image. Performing local contrast enhancement on the input images improved the models feature learing ability and consequently its classification accuracy.
 
@@ -81,10 +85,6 @@ def pre_process_image(img):
     return img_p
 
 ```
-
-Below is an example of a traffic sign image before and after the processing:
-
-<img src="./examples/preprocessing.png" width="240" />
 
 ### 3. Final model architecture
 
@@ -174,11 +174,10 @@ I scrapped the changes made above and alternatively tried the following changes:
 
 #### Attempt 5: validation accuracy 98.1%
 
-Changes made:
-* Changed the network to use multi-scale features as suggested in the paper [Traffic Sign Recognition with Multi-Scale Convolutional Networks](https://www.google.fr/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwi079aWzOjSAhWHJ8AKHUx_ARkQFggdMAA&url=http%3A%2F%2Fyann.lecun.org%2Fexdb%2Fpublis%2Fpsgz%2Fsermanet-ijcnn-11.ps.gz&usg=AFQjCNGTHlNOHKmIxaKYw3_h-VYrsgpCag&sig2=llvR7_9QizK3hkAgkmUKTw) and used only one fully connected layer at the end of the network.
-
 <img src="./examples/lenet_modified.png" width="800" /> 
 
+Changes made:
+* Changed the network to use multi-scale features as suggested in the paper [Traffic Sign Recognition with Multi-Scale Convolutional Networks](http://yann.lecun.com/exdb/publis/pdf/sermanet-ijcnn-11.pdf)) and used only one fully connected layer at the end of the network.
 * L2 regularisation = 0.001 over all the weights across the network
 
 
@@ -189,6 +188,7 @@ Changes made:
 
 
 ## Model Evaluation on new images
+
 In addition to evaluating the performance of my network over the test set, I decided to test how well the network classifies random traffic sign images pulled from the web.
 
 The following images were used:
@@ -210,9 +210,9 @@ As showcased above the prediction accuracy was 100%!
 ## Future work
 
 In order to *improve the performance* of my model I would perform the following:
-* Evaluate the performance of the network on a bigger and more diverse production data set
-* Leverage model ensembles
-* Do a more detailed analysis of model performance by looking at predictions in more detail. For example, calculate the precision and recall for each traffic sign type from the test set and then compare performance on the six new images.
-* Create a deeper network akin to AlexNet/ZFNet by stacking more conv layers prior to each pooling operation.
-* Utilise global average pooling to reduce the number of FC layers in the classifier and therefore the overall number of params across the network
-* Alternatively, rather than constructing the network from scratch,  I would like to leverage Transfer Learning by using existing CNN architectures to classify the traffic sign images. In particular, I would like to use ResNet/GoogleNet/VGGNet.
+* Evaluate the performance of the network on a **bigger and more diverse production data set**
+* Leverage **model ensembles**
+* Do a more detailed analysis of model performance by looking at predictions in more detail. For example, calculate the **precision and recall** for each traffic sign type from the test set and then compare performance on the six new images.
+* Create a **deeper network** akin to AlexNet/ZFNet by stacking more conv layers prior to each pooling operation.
+* Utilise **global average pooling** to reduce the number of FC layers in the classifier thereby also reducing the overall number of params across the network
+* Alternatively, rather than constructing the network from scratch,  I would like to leverage **Transfer Learning** by using existing CNN architectures to classify the traffic sign images. In particular, I would like to use ResNet/GoogleNet/VGGNet.
