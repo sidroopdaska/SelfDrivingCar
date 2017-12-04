@@ -197,11 +197,11 @@ The following images were used:
 
 and the result were as follows:
 <br />
-<img src="./examples/prod_images_pred1.png" width="250" /> 
+<img src="./examples/prod_images_pred1.png" width="360" /> 
 <br/>
-<img src="./examples/prod_images_pred2.png" width="250" /> 
+<img src="./examples/prod_images_pred2.png" width="360" /> 
 <br/>
-<img src="./examples/prod_images_pred3.png" width="250" /> 
+<img src="./examples/prod_images_pred3.png" width="420" /> 
 
 As showcased above the prediction accuracy was 100%! 
 
