@@ -93,7 +93,9 @@ For the training set, I:
 
   For the left image, ```steering_angle += correction``` the correction factor was added to the steering angle of a sample to encourage a slight adjustment to the right to reach the center. 
 
-  Similarly, for the right image, ```steering_angle -= correction``` the correction factor was negated from the steering angle to encourage an adjustment to the left to reach the center.
+  Similarly, for the right image, ```steering_angle -= correction``` the correction factor was negated from the steering angle to encourage an adjustment to the left to reach the center. A visualisation of this can be seen below.
+
+<img src="./examples/steering_correction.png" alt="Steering correction visualisation" /> 
 
 * For each perspective in a sample, I used the:
   * original image
