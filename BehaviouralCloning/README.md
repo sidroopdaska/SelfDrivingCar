@@ -60,7 +60,7 @@ Note: each **sample** consisted of the corresponding scene being captured in thr
 
 Example of a sample has been visualised below.
 
-<img src="./examples/track_1_samples.png" width="400" alt="Sample visualisation" />
+<img src="./examples/track_1_samples.png" width="800" alt="Sample visualisation" />
 
 ### 2.2 Data exploratory visualisation
 
@@ -68,7 +68,7 @@ Following the initial data acquisition phase, different methods were employed to
 
 Firstly, a log-scale distribution of the steering angles was plotted on a bar chart to gain an understanding into the distribution of the samples. This has been presented to the reader below.
 
-<img src="./examples/label_dist.png" width="800" alt="Label distribution" />
+<img src="./examples/label_dist.png" alt="Label distribution" />
 
 As can be observed, majority of the samples fell into the bin associated with driving on a straight stretch of road. This is inline with the conclusion derived above about the dataset being unbalanced and uneven.
 
