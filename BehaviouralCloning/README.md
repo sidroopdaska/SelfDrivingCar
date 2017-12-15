@@ -1,6 +1,8 @@
 # Behavioural Cloning
 
-See the video here on Youtube: <br/>
+See the video here on Youtube:
+<br/>
+<br/>
 [![Behavioural Cloning Video](https://img.youtube.com/vi/sOi37M-DMmk/0.jpg)](http://www.youtube.com/watch?v=sOi37M-DMmk)
 
 ## 1. Project Overview
