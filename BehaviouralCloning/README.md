@@ -183,7 +183,7 @@ The final outcome is that the car is able to autonomously drive around both the 
 
 Yay! 
 
-This can be visualised on [Youtube].
+This can be visualised on <a href="https://youtu.be/sOi37M-DMmk" target="_blank"/>.
 
 ## 5. Future work
 * Evalaute the performance on other tracks and determine how well the model generalises
@@ -192,4 +192,3 @@ This can be visualised on [Youtube].
 [//]: # (References)
 
 [Nvidia]: http://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf "Nvidia"
-[Youtube]: https://www.youtube.com/watch?v=sOi37M-DMmk&feature=youtu.be "Youtube"
