@@ -68,7 +68,7 @@ Following the initial data acquisition phase, different methods were employed to
 
 Firstly, a log-scale distribution of the steering angles was plotted on a bar chart to gain an understanding into the distribution of the samples. This has been presented to the reader below.
 
-<img src="./examples/label_dist.png" alt="Label distribution" />
+<img src="./examples/dist_steering_angle.png" alt="Steering angle distribution" />
 
 As can be observed, majority of the samples fell into the bin associated with driving on a straight stretch of road. This is inline with the conclusion derived above about the dataset being unbalanced and uneven.
 
@@ -77,7 +77,7 @@ To balance out the data set, all the bins that contained samples above a user de
 
 Following the cleanup process, the distribution looked as follows:
 
-![alt text][image2]
+<img src="./examples/dist_steering_angle_cleanup.png" alt="Steering angle distribution" />
 
 and contained an overall **9438 samples**
 
@@ -107,6 +107,8 @@ Each of these augmentation techniques have been detailed below.
 * **Translation**: The camera images were translated *horizontally* to simulate the effects of the car being at different positions in the lane and *vertically* to simulate the car being up or down a slope.
 
 * **Flipping**: The image was flipped using numpy's ```np.fliplr(image)``` and the corresponding steering angle was reversed as well.
+
+<img src="./examples/flip.png" alt="Flipping images" />
 
 Note: for more clarity, please read the ```generator()``` function in the model.ipynb Jupyter notebook.
 
