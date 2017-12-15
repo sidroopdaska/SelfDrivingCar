@@ -1,9 +1,7 @@
 # Behavioural Cloning
 
-<iframe width=40% height=40% src="//www.youtube.com/embed/sOi37M-DMmk
-  ?autoplay=1&cc_load_policy=1&rel=0&showinfo=0"
-  frameborder="0">
-</iframe>
+See the video here on Youtube: <br/>
+[![Behavioural Cloning Video](https://img.youtube.com/vi/sOi37M-DMmk/0.jpg)](http://www.youtube.com/watch?v=sOi37M-DMmk)
 
 ## 1. Project Overview
 
