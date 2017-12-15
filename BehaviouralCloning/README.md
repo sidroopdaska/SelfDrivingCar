@@ -15,7 +15,6 @@ The goal of the behavioural cloning project was to:
 To complete the project, the following was done:
 1. Literary research:
     * [NVIDIA]'s End to End Learning for Self-Driving Cars
-    * [Siraj Raval]()
     * Udacity course material
 2. Leveraged the Udacity simulator to collect training data
 3. Built a 10-layer Convolutional Neural Network that takes in an input image of shape (160, 320, 3) and outputs a steeing angle
