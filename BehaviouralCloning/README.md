@@ -1,6 +1,5 @@
 # Behavioural Cloning
 
-TODO: add link to youtube video
 
 ## 1. Project Overview
 
@@ -193,4 +192,4 @@ This can be visualised on [Youtube].
 [//]: # (References)
 
 [Nvidia]: http://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf "Nvidia"
-[Youtube]: "Youtube"
+[Youtube]: https://www.youtube.com/watch?v=sOi37M-DMmk&feature=youtu.be "Youtube"
