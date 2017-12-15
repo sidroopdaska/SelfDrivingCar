@@ -1,5 +1,9 @@
 # Behavioural Cloning
 
+<iframe width=40% height=40% src="//www.youtube.com/embed/sOi37M-DMmk
+  ?autoplay=1&cc_load_policy=1&rel=0&showinfo=0"
+  frameborder="0">
+</iframe>
 
 ## 1. Project Overview
 
@@ -183,7 +187,7 @@ The final outcome is that the car is able to autonomously drive around both the 
 
 Yay! 
 
-This can be visualised on <a href="https://youtu.be/sOi37M-DMmk" target="_blank"/>.
+This can be visualised on <a href="https://youtu.be/sOi37M-DMmk" target="_blank">Youtube</a>.
 
 ## 5. Future work
 * Evalaute the performance on other tracks and determine how well the model generalises
