@@ -1,6 +1,9 @@
 # Behavioural Cloning
 
-TODO: add link to youtube video
+See the video here on Youtube:
+<br/>
+<br/>
+[![Behavioural Cloning Video](https://img.youtube.com/vi/sOi37M-DMmk/0.jpg)](http://www.youtube.com/watch?v=sOi37M-DMmk)
 
 ## 1. Project Overview
 
@@ -62,8 +65,7 @@ Note: each **sample** consisted of the corresponding scene being captured in thr
 
 Example of a sample has been visualised below.
 
-<img src="./examples/track1_sample.png" alt="Sample visualisation" />
-<img src="./examples/track1_sample_data.png" width=300 alt="Sample data" />
+<img src="./examples/track1_sample.png" alt="Sample visualisation" /> <img src="./examples/track1_sample_data.png" width=500 alt="Sample data" />
 
 ### 2.2 Data exploratory visualisation
 
@@ -94,7 +96,9 @@ For the training set, I:
 
   For the left image, ```steering_angle += correction``` the correction factor was added to the steering angle of a sample to encourage a slight adjustment to the right to reach the center. 
 
-  Similarly, for the right image, ```steering_angle -= correction``` the correction factor was negated from the steering angle to encourage an adjustment to the left to reach the center.
+  Similarly, for the right image, ```steering_angle -= correction``` the correction factor was negated from the steering angle to encourage an adjustment to the left to reach the center. A visualisation of this can be seen below.
+
+<img src="./examples/steering_correction.png" alt="Steering correction visualisation" /> 
 
 * For each perspective in a sample, I used the:
   * original image
@@ -127,8 +131,8 @@ Note: for more clarity, please read the ```generator()``` function in the model.
 
 I used [NVIDIA]'s CNN architecture as a starting point since it was very powerful and had already been empirically tested for a similar task. The model proved more than adept and ended up being my final architecture. However, I made some slight adjustments/tweaks to the network to better suit my purpose. Here is a visualisation of my final network:
 
-<img src="./examples/model1.png" alt="Model Arch" />
-<img src="./examples/model2.png" alt="Model Arch" />
+<img src="./examples/model1.png" width=600 alt="Model Arch" />
+<img src="./examples/model2.png" width=600 alt="Model Arch" />
 
 As can be observed above, my modifications include:
 * **Cropping** layer to crop off the top 70 pixels and bottom 20 pixels since these regions have no critical information that needs to be learned
@@ -166,7 +170,7 @@ The following hyper params were chosen for the model after random search:
 ### 3.4 Training and Evaluation 
 For the first training run, all three camera images in a sample were utilised from the 9483 samples obtained from cleaning and spliting the dataset. These images were then flipped and supplemented with 1 augmented image per perspective. Hence, all in all 67,950 images were used for training. The figure below shows the learning curves for the training and validation loss.
 
-<img src="./examples/train1.png" alt="Learning Curves 1" />
+<img src="./examples/train1.png" width=700 alt="Learning Curves 1" />
 
 After this initial training run, the top four models with lowest validation losses were chosen and their performance was evaluated in the simulator. The model that performed the best from the ensemble was selected and trained for a second time over all the samples. This time the training was done without the left/right and augmented images, only flipped images were used. 
 
@@ -174,7 +178,7 @@ The reasoning behind this approach is that it's always good to have a vast diver
 
 The learning curves for this second training run have been visualised below.
 
-<img src="./examples/train2.png" alt="Learning Curves 2" />
+<img src="./examples/train2.png" width=700 alt="Learning Curves 2" />
 
 Furthermore, an additional observation made here was that the model with the lowest validation accuracy didn't always perform the best. In my case, the model with the second best validation accuracy gave the smoothest drive on the track. This was attributed to where and how the errors in the model surfaced themselves on the track. If most/all of the poor steering decisions were made on a critical scene, this would significantly impact either the driving experience or in a worse case cause the car to drift off track.
 
@@ -183,7 +187,7 @@ The final outcome is that the car is able to autonomously drive around both the 
 
 Yay! 
 
-This can be visualised on [Youtube].
+This can be visualised on <a href="https://youtu.be/sOi37M-DMmk" target="_blank">Youtube</a>.
 
 ## 5. Future work
 * Evalaute the performance on other tracks and determine how well the model generalises
@@ -192,4 +196,3 @@ This can be visualised on [Youtube].
 [//]: # (References)
 
 [Nvidia]: http://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf "Nvidia"
-[Youtube]: "Youtube"
