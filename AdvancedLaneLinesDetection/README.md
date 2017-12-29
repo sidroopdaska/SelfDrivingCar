@@ -69,7 +69,7 @@ OpenCV provides three functions, namely, ```cv2.findChessboardCorners```, ```cv2
 
 This process has been visualised below for the reader.
 
-TODO: find chessboard, undistort
+<img src="./readme_images/pipe1.png" alt="Pipeline step 1" />
 
 ### 2.2 Perspective Transformation & ROI selection
 
@@ -80,8 +80,10 @@ into a *bird's eye view* scene. This makes it easier to detect lane lines and me
 * Lastly, the undistorted image is warped by passing it into ```cv2.warpPerspective``` along with the transformation matrix
 
 An example of this has been showcased below for convenience.
+TODO: talk about cutting
 
-TODO: image, source and destinatino points highlighted
+<img src="./readme_images/pipe2_1.png" alt="Pipeline step 2" />
+<img src="./readme_images/pipe2_2.png" alt="Pipeline step 2" />
 
 ### 2.3 Generating a thresholded binary image
 
@@ -97,8 +99,8 @@ Many techniques such as gradient thresholding, thresholding over individual colo
 
 1. The performance of indvidual color channels varied in detecting the two colors (white and yellow) with some transforms significantly outperforming the others in detecting one color but showcasing poor performance when employed for detecting the other. Out of all the channels of RGB, HLS, HSV and LAB color spaces that were experiemented with the below mentioned provided the greatest signal-to-noise ratio and robustness against varying lighting conditions:
 
-  * *White pixel detection*: R-channel (RGB) and L-channel (HLS)
-  * *Yellow pixel detection*: B-channel (LAB) and S-channel (HLS)
+    * *White pixel detection*: R-channel (RGB) and L-channel (HLS)
+    * *Yellow pixel detection*: B-channel (LAB) and S-channel (HLS)
 
 2. Owing to the uneven road surfaces and non-uniform lighting conditions a **strong** need for **Adaptive Thresholding** was realised
 
@@ -140,8 +142,8 @@ The code snippet provided below highlights the steps involved in the creation of
 ```
 
 * The *custom adaptive mask* used in the ensemble leveraged the OpenCV ```cv2.adaptiveThreshold``` API with a Gaussian kernel for computing the threshold value. The construction process for the mask was similar to that detailed above with one important mention to the constructuion of the submasks:
- * White submask was created through a Logical AND of RGB R-channel and HSV V-channel, and, 
- * Yellow submask was created through a Logical AND of LAB B-channel and HLS S-channel
+    * White submask was created through a Logical AND of RGB R-channel and HSV V-channel, and, 
+    * Yellow submask was created through a Logical AND of LAB B-channel and HLS S-channel
 
 The image below showcases the masking operation and the resulting thresholded binary image from the ensemble for two test images.
 
@@ -152,11 +154,35 @@ over using just an individual color mask.
 
 ### 2.4 Lane Line detection: Sliding Window technique
 
+We now have a *warped, thresholded binary image* where the pixels are either 0 or 1; 0 (black color) constitutes the unfiltered pixels and 1 (white color) represents the filtered pixels. The next step involves mapping out the lane lines and you determining explicitly which pixels are part of the lines and which belong to the left line and which belong to the right line.
+
+The first technique employed to do so is: **Peaks in Histogram & Sliding Windows**
+
+1. We first take a histogram along all the columns in the lower half of the image. This involves adding up the pixel values along each column in the image. The two most prominent peaks in this histogram will be good indicators of the x-position of the base of the lane lines. These are used as starting points for our search. 
+
+2. From these starting points, we use a sliding window, placed around the line centers, to find and follow the lines up to the top of the frame.
+
+The parameters used for the sliding window search are:
+```
+```
+
+The 'hot' pixels that we have found are then fit to a second order polynomial represented mathematically as:
+The reader should note that we are fitting for ```y``` as opposed to ```x``` since the lines in the warped image are near vertical and may have the same x value for more than one y value. Once we have obained the 2nd order polynomial coefficients, the line data is obtained by using the mathematical formula: 
+
+for y in range (0, 720 i.e. image height)
+
+A visualisation of this process can be seen below.
+
+TODO: Gif and images
+
+Here, these pixels are this, these picels re this.
+
 ### 2.5 Lane Line detection: Adaptive Search
 
-### 2.6 Compute the lane line curvature and offset
+Having successfully detected and fit the two lane lines, we can avoid performing a blind search henceforth and instead 
+### 2.6 Metres per piexl
 
-### 2.7 Metres per piexl
+### 2.7 Compute the lane line curvature and offset
 
 ### 2.8 Pipeline
 
