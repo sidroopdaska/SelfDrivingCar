@@ -74,13 +74,13 @@ This process has been visualised below for the reader.
 ### 2.2 Perspective Transformation & ROI selection
 
 Following the distortion correction, an undistorted image undergoes Perspective Transformation which warpes the image
-into a *bird's eye view* scene. This makes it easier to detect lane lines and measure their curvature.
+into a *bird's eye view* scene. This makes it easier to detect the lane lines (since they are relatively parallel) and measure their curvature.
 
 * Firstly, we compute the transformation matrix by passing the ```src``` and ```dst``` points into ```cv2.getPerspectiveTransform```. These points are determined empirically with the help of the suite of test images.
-* Lastly, the undistorted image is warped by passing it into ```cv2.warpPerspective``` along with the transformation matrix
+* Then, the undistorted image is warped by passing it into ```cv2.warpPerspective``` along with the transformation matrix
+* Finally, we cut/crop out the sides of the image using a utility function ```get_roi()``` since this portion of the image contains no relevant information
 
 An example of this has been showcased below for convenience.
-TODO: talk about cutting
 
 <img src="./readme_images/pipe2_1.png" alt="Pipeline step 2" />
 <img src="./readme_images/pipe2_2.png" alt="Pipeline step 2" />
@@ -213,16 +213,16 @@ A visualisation of this process has been showcased below.
 <img src="./readme_images/pipe5_gif.gif" alt="Pipeline step 5" />
 
 <img src="./readme_images/pipe5_1.png" alt="Pipeline step 5" />
-<img src="./readme_images/pipe5_1_1.png" alt="Pipeline step 5" />
+<img src="./readme_images/pipe5_1_1.png" alt="Pipeline step 5" height=270/>
 
 <img src="./readme_images/pipe5_2.png" alt="Pipeline step 5" />
-<img src="./readme_images/pipe5_2_1.png" alt="Pipeline step 5" />
+<img src="./readme_images/pipe5_2_1.png" alt="Pipeline step 5" height=270/>
 
 ### 2.6 Conversion from pixel space to real world space
 
 To report the lane line curvature in metres we first need to convert from pixel space to real world space. For this, we measure the width of a section of lane that we're projecting in our warped image and the length of a dashed line. Once measured, we compare our results with the U.S. regulations (as highlighted [here](http://onlinemanuals.txdot.gov/txdotmanuals/rdw/horizontal_alignment.htm#BGBHGEGC)) that require a minimum lane width of 12 feet or 3.7 meters, and the dashed lane lines length of 3.048 meters.
 
-<img src="./readme_images/pipe6_1.png" alt="Pipeline step 6" />
+<img src="./readme_images/pipe6_1.png" alt="Pipeline step 6" height=500 />
 
 The values for metres/pixel along the x/y direction are therefore:
 
@@ -235,15 +235,15 @@ Average meter/px along y-axis: 0.0291
 
 Following this conversion, we can now compute the radius of curvature (see tutorial [here](https://www.intmath.com/applications-differentiation/8-radius-curvature.php)) at any point x on the lane line represented by the function ```x = f(y)``` as follows:
 
-<img src="./readme_images/pipe7_3.png" alt="Pipeline step 7" />
+<img src="./readme_images/pipe7_3.png" alt="Pipeline step 7" height=80 />
 
 In the case of the second order polynomial above, the first and second derivatives are:
 
-<img src="./readme_images/pipe7_4.png" alt="Pipeline step 7" />
+<img src="./readme_images/pipe7_4.png" alt="Pipeline step 7" height=100 />
 
 So, our equation for radius of curvature becomes:
 
-<img src="./readme_images/pipe7_5.png" alt="Pipeline step 7" />
+<img src="./readme_images/pipe7_5.png" alt="Pipeline step 7" height=80 />
 
 Note: since the y-values for an image increases from top to bottom, we compute the lane line curvature at ```y = img.shape[0]```, which is the point closest to the vehicle.
 
