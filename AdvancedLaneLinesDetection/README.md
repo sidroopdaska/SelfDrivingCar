@@ -85,7 +85,7 @@ TODO: image, source and destinatino points highlighted
 
 ### 2.3 Generating a thresholded binary image
 
-This was by far the most involved and challenging step of the pipeline. An overview of the test videos and a review of the (U.S. government specifications for highway curvature)[http://onlinemanuals.txdot.gov/txdotmanuals/rdw/horizontal_alignment.htm#BGBHGEGC] revealed the following optical properties of lane lines (on US roads):
+This was by far the most involved and challenging step of the pipeline. An overview of the test videos and a review of the [U.S. government specifications for highway curvature](http://onlinemanuals.txdot.gov/txdotmanuals/rdw/horizontal_alignment.htm#BGBHGEGC) revealed the following optical properties of lane lines (on US roads):
 
 * Lane lines have one of two colours, white or yellow
 * The surface on *both* sides of the lane lines has different brightness and/or saturation and a different hue than the line itself, and,
@@ -104,8 +104,52 @@ Many techniques such as gradient thresholding, thresholding over individual colo
 
 3. Gradient thresholding didn't provide any performance improvements over the color thresholding methods employed above, and hence, it was not used in the pipeline
 
-THe final solytion that was used inthe peoject was an esemble, this gave a 10% improvement in lane line detection
-s
+The final solution used in the pipeline consisted of an **ensemble of threshold masks**. Some of the key callout points are:
+* Five masks were used, namely, RGB, HLS, HSV, LAB and a custom adaptive mask
+* Each of these masks were composed through a *Logical OR* of two sub-masks created to detect the two lane line colors of yellow and white. Moreover, the threshold values associated with each sub-mask was adaptive to the mean of image / search window (further details on the search window has been provided in the sub-sections below)
+
+Logically, this can explained as:
+ ```Mask  = Sub-mask (white)  | Sub-mask (yellow)```
+ 
+The code snippet provided below highlights the steps involved in the creation of one of the masks from the ensemble
+
+```
+### HLS color space
+    hls = cv2.cvtColor(img, cv2.COLOR_RGB2HLS)
+    L = hls[:,:,1]
+    L_max, L_mean = np.max(L), np.mean(L)
+    S = hls[:,:,2]
+    S_max, S_mean = np.max(S), np.mean(S)
+ 
+    # YELLOW
+    L_adapt_yellow = max(80, int(L_mean * 1.25))
+    S_adapt_yellow = max(int(S_max * 0.25), int(S_mean * 1.75))
+    hls_low_yellow = np.array((15, L_adapt_yellow, S_adapt_yellow))
+    hls_high_yellow = np.array((30, 255, 255))
+
+    hls_yellow = binary_threshold(hls, hls_low_yellow, hls_high_yellow)
+    
+    # WHITE
+    L_adapt_white =  max(160, int(L_max *0.8),int(L_mean * 1.25))
+    hls_low_white = np.array((0, L_adapt_white,  0))
+    hls_high_white = np.array((255, 255, 255))
+
+    hls_white = binary_threshold(hls, hls_low_white, hls_high_white)
+        
+    hls_binary = hls_yellow | hls_white
+```
+
+* The *custom adaptive mask* used in the ensemble leveraged the OpenCV ```cv2.adaptiveThreshold``` API with a Gaussian kernel for computing the threshold value. The construction process for the mask was similar to that detailed above with one important mention to the constructuion of the submasks:
+ * White submask was created through a Logical AND of RGB R-channel and HSV V-channel, and, 
+ * Yellow submask was created through a Logical AND of LAB B-channel and HLS S-channel
+
+The image below showcases the masking operation and the resulting thresholded binary image from the ensemble for two test images.
+
+TODO: images
+
+An important mention to the reader is that the use of the ensemble gave a **~15% improvement** in pixel detection
+over using just an individual color mask. 
+
 ### 2.4 Lane Line detection: Sliding Window technique
 
 ### 2.5 Lane Line detection: Adaptive Search
