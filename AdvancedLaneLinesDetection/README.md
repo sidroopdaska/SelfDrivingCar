@@ -71,7 +71,7 @@ This process has been visualised below for the reader.
 
 TODO: find chessboard, undistort
 
-### 2.2 Perspective Trasnformation
+### 2.2 Perspective Transformation & ROI selection
 
 Following the distortion correction, an undistorted image undergoes Perspective Transformation which warpes the image
 into a *bird's eye view* scene. This makes it easier to detect lane lines and measure their curvature.
@@ -81,9 +81,19 @@ into a *bird's eye view* scene. This makes it easier to detect lane lines and me
 
 An example of this has been showcased below for convenience.
 
-TODO:
+TODO: image, source and destinatino points highlighted
 
 ### 2.3 Generating a thresholded binary image
+
+This was by far the most involved and challenging step of the pipeline. An overview of the viedeos and ..
+Hence, the aim of this step was to take the modified image and generate a thresholded binary image that only highlighted the pixels that were likely to be part of the left/right lane lines. Moreover, the thresholding process / mask needed to be robust enough to account for sharp tunrs/ uneven road surfaces and most importantly non-uniform lighting conditions.
+
+Many techniques such a different color space transforms and gradient thresholding were experimented with and as a result hthe follwoing key isights were dervied:
+* Different color transforms performed better Now you can see that, the S channel is still doing a fairly robust job of picking up the lines under very different color and contrast conditions, while the other selections look mess
+* Need for adaptive thresholding
+* Gradient thresholding didnt really give any better perofrmance imporvemet
+
+THe final solytion that was used inthe peoject was an esemble, this gave a 10% improvement in lane line detection
 
 ### 2.4 Lane Line detection: Sliding Window technique
 
