@@ -147,7 +147,10 @@ The code snippet provided below highlights the steps involved in the creation of
 
 The image below showcases the masking operation and the resulting thresholded binary image from the ensemble for two test images.
 
-TODO: images
+<img src="./readme_images/pipe3_1.png" alt="Pipeline step 3" />
+<img src="./readme_images/pipe3_2.png" alt="Pipeline step 3" />
+<img src="./readme_images/pipe3_3.png" alt="Pipeline step 3" />
+<img src="./readme_images/pipe3_4.png" alt="Pipeline step 3" />
 
 An important mention to the reader is that the use of the ensemble gave a **~15% improvement** in pixel detection
 over using just an individual color mask. 
@@ -176,9 +179,10 @@ The *'hot' pixels* that we have found are then fit to a second order polynomial.
 
 A visualisation of this process can be seen below.
 
-TODO: Gif and images
+<img src="./readme_images/pipe4_1.png" alt="Pipeline step 4" />
+<img src="./readme_images/pipe4_2.png" alt="Pipeline step 4" />
 
-Here, these pixels are this, these picels re this.
+Here, the red and pink color represents the 'hot' pixels for the left and right lane lines respectively. Furthermore, the line in green is the polyfit for the corresponding 'hot' pixels.
 
 ### 2.5 Lane Line detection: Adaptive Search
 
@@ -206,13 +210,19 @@ The parameters used in this method are:
 
 A visualisation of this process has been showcased below.
 
-TODO: Gif and images
+<img src="./readme_images/pipe5_gif.gif" alt="Pipeline step 5" />
+
+<img src="./readme_images/pipe5_1.png" alt="Pipeline step 5" />
+<img src="./readme_images/pipe5_1_1.png" alt="Pipeline step 5" />
+
+<img src="./readme_images/pipe5_2.png" alt="Pipeline step 5" />
+<img src="./readme_images/pipe5_2_1.png" alt="Pipeline step 5" />
 
 ### 2.6 Conversion from pixel space to real world space
 
 To report the lane line curvature in metres we first need to convert from pixel space to real world space. For this, we measure the width of a section of lane that we're projecting in our warped image and the length of a dashed line. Once measured, we compare our results with the U.S. regulations (as highlighted [here](http://onlinemanuals.txdot.gov/txdotmanuals/rdw/horizontal_alignment.htm#BGBHGEGC)) that require a minimum lane width of 12 feet or 3.7 meters, and the dashed lane lines length of 3.048 meters.
 
-TODO: image
+<img src="./readme_images/pipe6_1.png" alt="Pipeline step 6" />
 
 The values for metres/pixel along the x/y direction are therefore:
 
@@ -225,19 +235,23 @@ Average meter/px along y-axis: 0.0291
 
 Following this conversion, we can now compute the radius of curvature (see tutorial [here](https://www.intmath.com/applications-differentiation/8-radius-curvature.php)) at any point x on the lane line represented by the function ```x = f(y)``` as follows:
 
-TODO:
+<img src="./readme_images/pipe7_3.png" alt="Pipeline step 7" />
 
 In the case of the second order polynomial above, the first and second derivatives are:
 
-TODO:
+<img src="./readme_images/pipe7_4.png" alt="Pipeline step 7" />
 
 So, our equation for radius of curvature becomes:
 
-TODO:
+<img src="./readme_images/pipe7_5.png" alt="Pipeline step 7" />
 
 Note: since the y-values for an image increases from top to bottom, we compute the lane line curvature at ```y = img.shape[0]```, which is the point closest to the vehicle.
 
 A visualisation for this step can be seen below.
+
+<img src="./readme_images/pipe7_1.png" alt="Pipeline step 7" />
+<img src="./readme_images/pipe7_2.png" alt="Pipeline step 7" />
+
 
 ### 2.8 Pipeline
 
@@ -245,7 +259,7 @@ An image processing pipeline is therefore setup that runs the steps detailed abo
 
 An example of a processed frame has been presented to the reader below.
 
-TODO:
+<img src="./readme_images/pipe8_1.png" alt="Pipeline step 8" />
 
 ## 3. Reflection and Future Work
 
