@@ -69,7 +69,7 @@ OpenCV provides three functions, namely, ```cv2.findChessboardCorners```, ```cv2
 
 This process has been visualised below for the reader.
 
-TODO: find chessboard, undistort
+<img src="./readme_images/pipe1.png" alt="Pipeline step 1" />
 
 ### 2.2 Perspective Transformation & ROI selection
 
@@ -80,8 +80,10 @@ into a *bird's eye view* scene. This makes it easier to detect lane lines and me
 * Lastly, the undistorted image is warped by passing it into ```cv2.warpPerspective``` along with the transformation matrix
 
 An example of this has been showcased below for convenience.
+TODO: talk about cutting
 
-TODO: image, source and destinatino points highlighted
+<img src="./readme_images/pipe2_1.png" alt="Pipeline step 2" />
+<img src="./readme_images/pipe2_2.png" alt="Pipeline step 2" />
 
 ### 2.3 Generating a thresholded binary image
 
@@ -97,8 +99,8 @@ Many techniques such as gradient thresholding, thresholding over individual colo
 
 1. The performance of indvidual color channels varied in detecting the two colors (white and yellow) with some transforms significantly outperforming the others in detecting one color but showcasing poor performance when employed for detecting the other. Out of all the channels of RGB, HLS, HSV and LAB color spaces that were experiemented with the below mentioned provided the greatest signal-to-noise ratio and robustness against varying lighting conditions:
 
-  * *White pixel detection*: R-channel (RGB) and L-channel (HLS)
-  * *Yellow pixel detection*: B-channel (LAB) and S-channel (HLS)
+    * *White pixel detection*: R-channel (RGB) and L-channel (HLS)
+    * *Yellow pixel detection*: B-channel (LAB) and S-channel (HLS)
 
 2. Owing to the uneven road surfaces and non-uniform lighting conditions a **strong** need for **Adaptive Thresholding** was realised
 
@@ -140,8 +142,8 @@ The code snippet provided below highlights the steps involved in the creation of
 ```
 
 * The *custom adaptive mask* used in the ensemble leveraged the OpenCV ```cv2.adaptiveThreshold``` API with a Gaussian kernel for computing the threshold value. The construction process for the mask was similar to that detailed above with one important mention to the constructuion of the submasks:
- * White submask was created through a Logical AND of RGB R-channel and HSV V-channel, and, 
- * Yellow submask was created through a Logical AND of LAB B-channel and HLS S-channel
+    * White submask was created through a Logical AND of RGB R-channel and HSV V-channel, and, 
+    * Yellow submask was created through a Logical AND of LAB B-channel and HLS S-channel
 
 The image below showcases the masking operation and the resulting thresholded binary image from the ensemble for two test images.
 
@@ -152,13 +154,107 @@ over using just an individual color mask.
 
 ### 2.4 Lane Line detection: Sliding Window technique
 
+We now have a *warped, thresholded binary image* where the pixels are either 0 or 1; 0 (black color) constitutes the unfiltered pixels and 1 (white color) represents the filtered pixels. The next step involves mapping out the lane lines and  determining explicitly which pixels are part of the lines and which belong to the left line and which belong to the right line.
+
+The first technique employed to do so is: **Peaks in Histogram & Sliding Windows**
+
+1. We first take a histogram along all the columns in the lower half of the image. This involves adding up the pixel values along each column in the image. The two most prominent peaks in this histogram will be good indicators of the x-position of the base of the lane lines. These are used as starting points for our search. 
+
+2. From these starting points, we use a sliding window, placed around the line centers, to find and follow the lines up to the top of the frame.
+
+The parameters used for the sliding window search are:
+```
+   nb_windows = 12 # number of sliding windows
+   margin = 100 # width of the windows +/- margin
+   minpix = 50 # min number of pixels needed to recenter the window
+   min_lane_pts = 10  # min number of 'hot' pixels needed to fit a 2nd order polynomial as a lane line
+```
+
+The *'hot' pixels* that we have found are then fit to a second order polynomial. The reader should note that we are fitting for ```y``` as opposed to ```x``` since the lines in the warped image are near vertical and may have the same x value for more than one y value. Once we have computed the 2nd order polynomial coefficients, the line data is obtained for y ranging from (0, 720 i.e. image height) by using the mathematical formula: 
+
+```x = f(y) = Ay^2 + By + C```
+
+A visualisation of this process can be seen below.
+
+TODO: Gif and images
+
+Here, these pixels are this, these picels re this.
+
 ### 2.5 Lane Line detection: Adaptive Search
 
-### 2.6 Compute the lane line curvature and offset
+Once we have successfully detected the two lane lines, for subsequent frames in a video, we search in a margin around the previous line position instead of performing a blind search.
 
-### 2.7 Metres per piexl
+Although the Peaks in Histogram and Sliding Windows technique does a reasonable job in detecting the lane line, it often fails when subject to non-uniform lighting conditions and discolouration. To combat this, a method that could perform adaptive thresholding over a **smaller** receptive field/window of the image was needed. The reasoning behind this approach was that performing adaptive thresholding over a smaller kernel would more effectively filter out our 'hot' pixels in varied conditions as opposed to trying to optimise a threshold value for the entire image.
+
+Hence, a custom *Adaptive Search technique* was implemented to operate once a frame was successfully analysed and a pair of lane lines were polyfit through the Sliding Windows technique. This method:
+
+1. Follows along the trajectory of the previous polyfit lines and splits the image into a number of smaller windows.
+2. These windows are then iteratively passed into the ```get_binary_image``` function (defined in Step 4 of the pipeline) and their threshold values are computed as the mean of the pixel intensity values across the window
+3. Following this iterative thresholding process, the returned binary windows are stacked together to get a single large binary image with dimensions same as that of the input image
+
+An important pre-requisite for this method is that: the polynomial coefficients from the previous frame must be known. Therefore, after each successful detection the correpsonding polynomial coefficient are stored into a global cache, the size for which is defined by the user. Moreover, this cache is also used to reduce the jitter and smooth the poly-curve from one frame to the next.
+
+The parameters used in this method are:
+
+```
+   nb_windows = 10 # Number of windows over which to perform the localised color thresholding  
+   bin_margin = 80 # Width of the windows +/- margin for localised thresholding
+   margin = 60 # Width around previous line positions +/- margin around which to search for the new lines
+   smoothing_window = 5 # Number of frames over which to compute the Moving Average
+   min_lane_pts = 10  # min number of 'hot' pixels needed to fit a 2nd order polynomial as a lane line
+```
+
+A visualisation of this process has been showcased below.
+
+TODO: Gif and images
+
+### 2.6 Conversion from pixel space to real world space
+
+To report the lane line curvature in metres we first need to convert from pixel space to real world space. For this, we measure the width of a section of lane that we're projecting in our warped image and the length of a dashed line. Once measured, we compare our results with the U.S. regulations (as highlighted [here](http://onlinemanuals.txdot.gov/txdotmanuals/rdw/horizontal_alignment.htm#BGBHGEGC)) that require a minimum lane width of 12 feet or 3.7 meters, and the dashed lane lines length of 3.048 meters.
+
+TODO: image
+
+The values for metres/pixel along the x/y direction are therefore:
+
+```
+Average meter/px along x-axis: 0.0065
+Average meter/px along y-axis: 0.0291
+```
+
+### 2.7 Curvature and Offset
+
+Following this conversion, we can now compute the radius of curvature (see tutorial [here](https://www.intmath.com/applications-differentiation/8-radius-curvature.php)) at any point x on the lane line represented by the function ```x = f(y)``` as follows:
+
+TODO:
+
+In the case of the second order polynomial above, the first and second derivatives are:
+
+TODO:
+
+So, our equation for radius of curvature becomes:
+
+TODO:
+
+Note: since the y-values for an image increases from top to bottom, we compute the lane line curvature at ```y = img.shape[0]```, which is the point closest to the vehicle.
+
+A visualisation for this step can be seen below.
 
 ### 2.8 Pipeline
 
+An image processing pipeline is therefore setup that runs the steps detailed above in sequence to process a video frame by frame. The results of the pipeline on two test videos can be visualised in the ```project_video_output.mp4``` and ```challenge_video_output.mp4```
+
+An example of a processed frame has been presented to the reader below.
+
+TODO:
+
 ## 3. Reflection and Future Work
 
+This was a very tedious project which involved the tuning of several parameters by hand. With the traditional Computer Vision approach I was able to develop a strong intuition for what worked and why. I also learnt that the solutions developed through such approaches aren't very optimised and can be sensistive to the chosen parameters. As a result, I developed a strong appreciation for Deep Learning based approaches to Computer Vision. Although, they can appear as a black box at times Deep learning approaches avoid the need for fine-tuning these parameters, and are inherently more robust. 
+
+The challenges I encountered were almost exclusively due to non-uniform lighting conditions, shadows, discoloration and uneven road surfaces. Although, it wasn't difficult to select the thresholding parameters to successfully filter the lane pixels it was very time consuming. Furthermore, the two biggest problem with my pipeline that become evident in the harder challenge video are:
+
+1. Its inability to handle sharp turns and constantly changing slope of the road. This a direct consequence of the assumption made in Step 2 of the pipeline where the road in front of the vehicle is assumed to be relatively flat and straight(ish). This results in a 'static' perspective transformation matrix meaning that if the assumption doesn't hold true the lane lines will no longer be relatively parallel. As a result, it becomes a lot harder to assess the validity of the detected lane lines, because even if the lane lines in the warped image are not nearly parallel, they might still be valid lane lines. 
+
+2. Poor lane lines detection in areas of glare/ severe shadows / combination of both. This results from the failure of the thresholding function to successfully filter out the lane pixels in these extreme lighting conditions
+
+In the coming weeks, I aim to tackle these problems and improve the performance of the model on the harder challenge video.
