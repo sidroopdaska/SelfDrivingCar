@@ -51,7 +51,7 @@ The various steps invovled in the pipeline are as follows, each of these has als
 
 * Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
 * Apply a distortion correction to raw images.
-* Apply a perspective transform to rectify binary image ("birds-eye view").
+* Apply a perspective transform to rectify image ("birds-eye view").
 * Use color transforms, gradients, etc., to create a thresholded binary image.
 * Detect lane pixels and fit to find the lane boundary.
 * Determine the curvature of the lane and vehicle position with respect to center.
@@ -60,7 +60,28 @@ The various steps invovled in the pipeline are as follows, each of these has als
 
 ### 2.1 Camera calibration and distortion correction
 
+Distortion occurs when the camera maps/transforms the 3D object points to 2D image points. Since this transformation process is imperfect, the apparent shape/size/appearance of some of the objects in the image change i.e. they get distorted. Since we are trying to accurately place the car in the world, look at the curve of a lane and steer in the correct direction, we need to correct for this distortion. Otherwise, our measurements are going to be incorrect.
+
+OpenCV provides three functions, namely, ```cv2.findChessboardCorners```, ```cv2.calibrateCamera``` and ```cv2.undistort```to do just that. Let's unpack this to see how it works:
+* Firstly, we define a set of object points that represent inside corners in a set of chessboard images. We then map the object points to images points by using ```cv2.findChessboardCorners```.
+* Secondly, we call ```cv2.calibrateCamera``` with this newly created list of object points and image poins to compute the camera calibration matrix and distortion coefficients. These are henceforth stored in a pickle file in the root directory for future use.
+* Thirdly, we undistort raw images by passing them into ```cv2.undistort``` along with the two params calculated above.
+
+This process has been visualised below for the reader.
+
+TODO: find chessboard, undistort
+
 ### 2.2 Perspective Trasnformation
+
+Following the distortion correction, an undistorted image undergoes Perspective Transformation which warpes the image
+into a *bird's eye view* scene. This makes it easier to detect lane lines and measure their curvature.
+
+* Firstly, we compute the transformation matrix by passing the ```src``` and ```dst``` points into ```cv2.getPerspectiveTransform```. These points are determined empirically with the help of the suite of test images.
+* Lastly, the undistorted image is warped by passing it into ```cv2.warpPerspective``` along with the transformation matrix
+
+An example of this has been showcased below for convenience.
+
+TODO:
 
 ### 2.3 Generating a thresholded binary image
 
