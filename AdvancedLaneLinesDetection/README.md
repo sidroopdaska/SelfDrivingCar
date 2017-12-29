@@ -85,16 +85,15 @@ TODO: image, source and destinatino points highlighted
 
 ### 2.3 Generating a thresholded binary image
 
-This was by far the most involved and challenging step of the pipeline. An overview of the viedeos and ..
-Hence, the aim of this step was to take the modified image and generate a thresholded binary image that only highlighted the pixels that were likely to be part of the left/right lane lines. Moreover, the thresholding process / mask needed to be robust enough to account for sharp tunrs/ uneven road surfaces and most importantly non-uniform lighting conditions.
+This was by far the most involved and challenging step of the pipeline. An overview of the test videos and a quick review of the (U.S. government specifications for highway curvature)[http://onlinemanuals.txdot.gov/txdotmanuals/rdw/horizontal_alignment.htm#BGBHGEGC] highlighted that the lane lines are either white / yellow in color. Hence, the aim of this step was to take an undistorted warped image and generate a thresholded binary image that only highlighted the pixels that were likely to be part of the left/right lane lines. Moreover, the thresholding process / mask needed to be robust enough to account for sharp tunrs/ uneven road surfaces and most importantly non-uniform lighting conditions.
 
-Many techniques such a different color space transforms and gradient thresholding were experimented with and as a result hthe follwoing key isights were dervied:
+Many techniques such a different color space transforms and gradient thresholding were experimented with and as a result the following key insights were derived:
 * Different color transforms performed better Now you can see that, the S channel is still doing a fairly robust job of picking up the lines under very different color and contrast conditions, while the other selections look mess
 * Need for adaptive thresholding
 * Gradient thresholding didnt really give any better perofrmance imporvemet
 
 THe final solytion that was used inthe peoject was an esemble, this gave a 10% improvement in lane line detection
-
+s
 ### 2.4 Lane Line detection: Sliding Window technique
 
 ### 2.5 Lane Line detection: Adaptive Search
