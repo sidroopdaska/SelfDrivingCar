@@ -85,12 +85,24 @@ TODO: image, source and destinatino points highlighted
 
 ### 2.3 Generating a thresholded binary image
 
-This was by far the most involved and challenging step of the pipeline. An overview of the test videos and a quick review of the (U.S. government specifications for highway curvature)[http://onlinemanuals.txdot.gov/txdotmanuals/rdw/horizontal_alignment.htm#BGBHGEGC] highlighted that the lane lines are either white / yellow in color. Hence, the aim of this step was to take an undistorted warped image and generate a thresholded binary image that only highlighted the pixels that were likely to be part of the left/right lane lines. Moreover, the thresholding process / mask needed to be robust enough to account for sharp tunrs/ uneven road surfaces and most importantly non-uniform lighting conditions.
+This was by far the most involved and challenging step of the pipeline. An overview of the test videos and a review of the (U.S. government specifications for highway curvature)[http://onlinemanuals.txdot.gov/txdotmanuals/rdw/horizontal_alignment.htm#BGBHGEGC] revealed the following optical properties of lane lines (on US roads):
 
-Many techniques such a different color space transforms and gradient thresholding were experimented with and as a result the following key insights were derived:
-* Different color transforms performed better Now you can see that, the S channel is still doing a fairly robust job of picking up the lines under very different color and contrast conditions, while the other selections look mess
-* Need for adaptive thresholding
-* Gradient thresholding didnt really give any better perofrmance imporvemet
+* Lane lines have one of two colours, white or yellow
+* The surface on *both* sides of the lane lines has different brightness and/or saturation and a different hue than the line itself, and,
+* Lane lines are not necessarily contiguous, so the algorithm needs to be able to identify individual line segments as belonging to the same lane line.  
+
+The latter property is addressed in the next two subsections whereas this subsection leverages the former two properties to develop a *filtering process* that takes an undistorted warped image and generates a thresholded binary image that only highlights the pixels that are likely to be part of the lane lines. Moreover, the thresholding/masking process needs to be robust enough to account for **uneven road surfaces** and most importantly **non-uniform lighting conditions**.
+
+Many techniques such as gradient thresholding, thresholding over individual colour channels of different color spaces and a combination of them were experimented with over a training set of images with the aim of best filtering the lane line pixels from other pixels. The experimentation yielded the following key insights:
+
+1. The performance of indvidual color channels varied in detecting the two colors (white and yellow) with some transforms significantly outperforming the others in detecting one color but showcasing poor performance when employed for detecting the other. Out of all the channels of RGB, HLS, HSV and LAB color spaces that were experiemented with the below mentioned provided the greatest signal-to-noise ratio and robustness against varying lighting conditions:
+
+  * *White pixel detection*: R-channel (RGB) and L-channel (HLS)
+  * *Yellow pixel detection*: B-channel (LAB) and S-channel (HLS)
+
+2. Owing to the uneven road surfaces and non-uniform lighting conditions a **strong** need for **Adaptive Thresholding** was realised
+
+3. Gradient thresholding didn't provide any performance improvements over the color thresholding methods employed above, and hence, it was not used in the pipeline
 
 THe final solytion that was used inthe peoject was an esemble, this gave a 10% improvement in lane line detection
 s
