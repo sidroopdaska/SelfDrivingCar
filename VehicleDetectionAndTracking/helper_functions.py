@@ -70,10 +70,11 @@ def single_img_features(img, color_space='RGB', spatial_size=(32, 32),
 
     # 1) Define an empty list to receive features
     features = []
-
+    # print(img.min(), img.max())
     # 2) Apply color conversion
-    feature_img = convert_color(img, cspace=color_space)
-
+    feature_img = convert_color(img, cspace=color_space) # returns in 0-255 range
+    # print(feature_img.min(), feature_img.max())
+    # print(feature_img.dtype)
     # 3) Compute spatial features if flag is set
     if spatial_feat:
         spatial_features = bin_spatial(feature_img, size=spatial_size)
