@@ -5,7 +5,7 @@ Collection of helper functions
 import cv2
 import numpy as np
 from skimage.feature import hog
-
+import matplotlib.image as mpimg
 
 def draw_boxes(img, bboxes, color=(0, 0, 255), thick=6):
     # Make a copy of the image
@@ -63,7 +63,7 @@ def get_hog_features(img, orient=9, pix_per_cell=8, cell_per_block=2,
                feature_vector=feature_vec)
 
 
-def extract_features(img, color_space='RGB', spatial_size=(32, 32),
+def single_img_features(img, color_space='RGB', spatial_size=(32, 32),
                      hist_bins=32, orient=9,
                      pix_per_cell=8, cell_per_block=2, hog_channel=0,
                      spatial_feat=True, hist_feat=True, hog_feat=True):
@@ -76,13 +76,13 @@ def extract_features(img, color_space='RGB', spatial_size=(32, 32),
 
     # 3) Compute spatial features if flag is set
     if spatial_feat:
-        spatial_features = bin_spatial(feature_image, size=spatial_size)
+        spatial_features = bin_spatial(feature_img, size=spatial_size)
         # 4) Append features to list
         features.append(spatial_features)
 
     # 5) Compute histogram features if flag is set
     if hist_feat:
-        hist_features = color_hist(feature_image, nbins=hist_bins)
+        hist_features = color_hist(feature_img, nbins=hist_bins)
         # 6) Append features to list
         features.append(hist_features)
 
@@ -90,13 +90,13 @@ def extract_features(img, color_space='RGB', spatial_size=(32, 32),
     if hog_feat:
         if hog_channel == 'ALL':
             hog_features = []
-            for channel in range(feature_image.shape[2]):
-                hog_features.extend(get_hog_features(feature_image[:, :, channel],
+            for channel in range(feature_img.shape[2]):
+                hog_features.extend(get_hog_features(feature_img[:, :, channel],
                                                      orient, pix_per_cell, cell_per_block,
                                                      transform_sqrt=True,
                                                      vis=False, feature_vec=True))
         else:
-            hog_features = get_hog_features(feature_image[:, :, hog_channel], orient,
+            hog_features = get_hog_features(feature_img[:, :, hog_channel], orient,
                                             pix_per_cell, cell_per_block,
                                             transform_sqrt=True,
                                             vis=False, feature_vec=True)
@@ -106,3 +106,4 @@ def extract_features(img, color_space='RGB', spatial_size=(32, 32),
 
     # 9) Return concatenated array of features
     return np.concatenate(features)
+
