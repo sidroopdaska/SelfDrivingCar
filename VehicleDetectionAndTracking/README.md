@@ -60,10 +60,35 @@ The exploration of the data set revealed the following:
 * Image shape: (64, 64, 3)
 * Image dtype: float32
 
+An example from each of the classes has been visualised below for the reader.
+TODO: add image
+
 From above we can conclude that the dataset is fairly balanced as it contains equal proportions of vehicle and non-vehicle images. However, the most important observation was that the dataset contained sequences of images where the target object (vehicles in this case) appears almost identical in a whole series of images. In such a case, performing a randomized train-test split will be subject to overfitting because images in the training set may be nearly identical to images in the test set.
 
-To deal with this **time-series issue**, 90% of the first half of each dataset (vehicle and non-vehicle) was reserved for training the classifier and the remainder 10% was sliced away as the test set.
+To deal with this **time-series issue**, 90% of the first half of each classes dataset (vehicle and non-vehicle) was reserved for training the classifier and the remainder 10% was sliced away as the test set.
 
 **Note:** since we are training a Linear SVC with only one hyper-parameter *C*, the chance of overfitting was very small and as a result no validation set was created.
+
+### 2.2 Feature Extraction
+
+In order to be able to successfully classify vehicles in an image, a set of useful features were needed over which a classifier could be trained. For this project, the following features were used:
+
+1. **Spatially binned raw color values**: It is known that raw pixel intensity values can be useful in performing classification. However, it can be cumbersome to include three color channels of a full resolution image. Therefore, we perform spatial binning on an image which allows us to retain enough useful information to help find vehicles all the while reducing the number of pixels. <br/> <br />For our purposes, OpenCV's ```cv2.resize()``` API was used to scale down the resolution of an image. An example of this can   be visualised below.
+
+2. **Histogram of color values**: Although the raw color values provide us useful information, to be able to stay robust to changes in object appearance we also included the distribution of color values. This removes our dependence from the object's structure and allows for variations in aspects and orientations to be matched.
+
+3. **Histogram of Oriented Gradients (HOG)**: In addition to the color information, knowledge of the shape of the object was also considered useful in performing classification. As a result, HOG features were appended to the overall feature vector. HOG was chosen due to its robustness to noise over simply including per pixel gradient information.
+
+### 2.2 Data standardisation
+
+To standardise the data, i.e. to ensure each feature in the feature vector had zero mean and unit variance, scikit-learn's ```StandardScaler()``` was fit to the training set. Following this, both the training and test sets were transformed using this fitted instance of the Standard Scaler.
+
+### 2.3 Classifier
+
+### 2.4 Sliding Window technique
+
+### 2.5 Handling multiple detections and false positives
+
+### 2.6 Pipeline
 
 ## 3. Reflection and Future Work
