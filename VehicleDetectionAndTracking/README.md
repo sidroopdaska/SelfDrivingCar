@@ -85,7 +85,41 @@ To standardise the data, i.e. to ensure each feature in the feature vector had z
 
 ### 2.3 Classifier
 
+It has been shown that Support Vector Machines (SVM's) work well with HOG features. Therefore, an off the shelf Linear SVC from scikit-learn was used as a starting point. 
+
+For feature extraction during the training phase, different params for each of the three features were tweaked and the resulting test set accuracy was used an indicator to evaluate them.
+
+The parameters and some of their corresponding values that were experimented with included:
+* **Color space**: HSV, HLS, YUV, YCrCb
+* **Spatial bin size**: 32, 24, 16
+* **Number of Histogram bins**: 32, 24
+* **Number of orientation bins**: 6, 9, 12
+* **Pixels per cell**: 8
+* **Cells per block**: 2
+
+The final parameters that were chosen are listed in the table below:
+
+| Parameters  | Values |
+| ------------- | ------------- |
+| Color space | YCrCb  |
+| Spatial bin size  | (16, 16)  |
+| # histogram bins | 24  |
+| # orientation bins | 9  |
+| pixels/cell | 8  |
+| cells/block | 8  |
+
+Using the above listed parameters, we achieved:
+* Training Accuracy of **1.00**, and,
+* Test set accuracy of **0.9781**
+
+Additionally, the confusion matrix for this model has been visualised below.
+
+TODO: Add confusion matrix
+
+Seeing as we were able to obtain a high test accuracy with such a simplistic model additional classifiers such as Decision Trees, Neural Networks or Model Ensembles weren't considered but are a motivation for future work (see section below for more information regarding this).
+
 ### 2.4 Sliding Window technique
+
 
 ### 2.5 Handling multiple detections and false positives
 
