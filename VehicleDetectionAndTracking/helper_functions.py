@@ -1,5 +1,5 @@
 '''
-Collection of helper functions
+Collection of helper functions for feature extraction
 '''
 
 import cv2
@@ -7,7 +7,7 @@ import numpy as np
 from skimage.feature import hog
 import matplotlib.image as mpimg
 
-def draw_boxes(img, bboxes, color=(0, 0, 255), thick=6):
+def draw_boxes(img, bboxes, color=(0, 255, 0), thick=6):
     # Make a copy of the image
     imcopy = np.copy(img)
 
