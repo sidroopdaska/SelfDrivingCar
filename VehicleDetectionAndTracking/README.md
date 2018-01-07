@@ -39,7 +39,6 @@ The various steps invovled in the pipeline are as follows, each of these has als
   * **Histogram of Oriented Gradients (HOG)** 
   * Spatially binned raw color values, and,
   * Histogram of color values
-  
 * Implement a sliding-window technique and use the trained classifier to search for vehicles in images
 * Create a heat map of recurring detections frame by frame to reject outliers, handle multiple detections and follow detected vehicles
 * Estimate a bounding box for vehicles detected
@@ -77,7 +76,7 @@ In order to be able to successfully classify vehicles in an image, a set of usef
 
 2. **Histogram of color values**: Although the raw color values provide us useful information, to be able to stay robust to changes in object appearance we also included the distribution of color values. This removes our dependence from the object's structure and allows for variations in aspects and orientations to be matched.
 
-3. **Histogram of Oriented Gradients (HOG)**: In addition to the color information, knowledge of the shape of the object was also considered useful in performing classification. As a result, HOG features were appended to the overall feature vector. HOG was chosen due to its robustness to noise over simply including per pixel gradient information.
+3. **Histogram of Oriented Gradients (HOG)**: In addition to the color information, knowledge of the shape of the object was also considered useful in performing classification. As a result, HOG features were appended to the overall feature vector. HOG was chosen due to its robustness to noise over simply including per pixel gradient information. <br/><br/> For this project, scikit-image's ```hog()``` API was used.
 
 ### 2.2 Data standardisation
 
@@ -100,7 +99,7 @@ The parameters and some of their corresponding values that were experimented wit
 The final parameters that were chosen are listed in the table below:
 
 | Parameters  | Values |
-| ------------- | ------------- |
+| --- | --- |
 | Color space | YCrCb  |
 | Spatial bin size  | (16, 16)  |
 | # histogram bins | 24  |
