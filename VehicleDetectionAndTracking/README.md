@@ -4,9 +4,9 @@
 
 ### 1.1 Goal 
 
-The goal of the project is to create a pipeline to detect and track vehicles in a video. A demo of the pipeline can be found on [Youtube](https://www.youtube.com/watch?v=leUGLrnGym4)
+The goal of the project is to create a pipeline to detect and track vehicles in a video. A demo of the pipeline can be found on [Youtube](https://youtu.be/_IWOQQnik4Q)
 
-[![Advanced Lane Tracking Video](https://img.youtube.com/vi/leUGLrnGym4/0.jpg)](https://www.youtube.com/watch?v=leUGLrnGym4)
+[![Vehicle Detection & Tracking Video](https://img.youtube.com/vi/_IWOQQnik4Q/0.jpg)](https://www.youtube.com/watch?v=_IWOQQnik4Q)
 
 ### 1.2 Dependencies
 
@@ -73,7 +73,7 @@ To deal with this **time-series issue**, 90% of the first half of each classes d
 
 In order to be able to successfully classify vehicles in an image, a set of useful features were needed over which a classifier could be trained. For this project, the following features were used:
 
-1. **Spatially binned raw color values**: It is known that raw pixel intensity values can be useful in performing classification. However, it can be cumbersome to include three color channels of a full resolution image. Therefore, we perform spatial binning on an image which allows us to retain enough useful information to help find vehicles all the while reducing the number of pixels. <br/> <br />For our purposes, OpenCV's ```cv2.resize()``` API was used to scale down the resolution of an image. An example of this can be visualised below. <img src="./readme_images/pipe2.png" alt="Pipeline step 2.2" height=240/>
+1. **Spatially binned raw color values**: It is known that raw pixel intensity values can be useful in performing classification. However, it can be cumbersome to include three color channels of a full resolution image. Therefore, we perform spatial binning on an image which allows us to retain enough useful information to help find vehicles all the while reducing the number of pixels. <br/> <br />For our purposes, OpenCV's ```cv2.resize()``` API was used to scale down the resolution of an image. An example of this can be visualised below. <br/><br/><img src="./readme_images/pipe2.png" alt="Pipeline step 2.2" height=240/>
 
 
 2. **Histogram of color values**: Although the raw color values provide us useful information, to be able to stay robust to changes in object appearance we also included the distribution of color values. This removes our dependence from the object's structure and allows for variations in aspects and orientations to be matched.
