@@ -158,6 +158,8 @@ To improve the pipeline, the following modifications were made:
 
 * At present, the feature selection process was done by hand. This proved to be a rather tredious process as it required tweaking many different params. A better method of performing feature selection needs to be investigated. One such approach would be implementing a version Randomised Search / Grid Search akin to that done for model selection.
 
-* The best test set accuracy achieved was 0.9781. Although this sufficed for this project, a much higher accuracy would be needed for practical use. As a result, for future work, I would like to explore the use DL models to replace the current Linear SVM model.
+* The best test set accuracy achieved was 0.9781. Although this sufficed for this project, a much higher accuracy would be needed for practical use. 
 
 * The current pipeline is extremely slow and nowhere close to providing real time processing capabilities. Although the pipeline was sped up by skipping frames and performing a whole image window search only once every 12 frames, it introduced an issue where a new target object can only be detected with a 0.5 sec delay. Hence, providing a trade-off between improved detection ability and processing speed.
+
+* As a result, for future work, I would like to explore the use DL models such YOLO, SSD, etc. to achieve higher accuracy and real time processing ability.
