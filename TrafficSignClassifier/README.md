@@ -62,7 +62,7 @@ Following the augmentation process, the size of the training set was 108,242. Th
 
 
 ### 2. Pre-processing
-This phase is **crucial** to improving the performance of the model and also determines how quickily your model converges to a solution. My pre-processing pipeline did the following:
+This phase is **crucial** to improving the performance of the model and also determines how quickly your model converges to a solution. My pre-processing pipeline did the following:
 
 * **RGB color space -> Grayscale**: The images were converted from their original RGB color space to Gray scale. This reduced the the numbers of channels in the input of the network and consequently the amount of memory required to represent these images. My basis for doing this stemmed from the observation that the colors in the image did not impart any additional information that could be leveraged by the network for the classification task.
 * **Feature Scaling & Mean Normalisation**: I normalized each image to ensure it had a mean of 0 and standard deviation of 1, and,
