@@ -2,4 +2,6 @@ data/
 track2_1/
 track2_2/
 mac-sim.app.zip
+mac_sim.app
+mac_sim.app/*
 models/
