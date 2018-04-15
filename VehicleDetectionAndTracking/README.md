@@ -107,7 +107,7 @@ The final parameters that were chosen are listed in the table below:
 | # histogram bins | 24  |
 | # orientation bins | 9  |
 | pixels/cell | 8  |
-| cells/block | 8  |
+| cells/block | 2  |
 
 Using the above listed parameters, we achieved:
 * Training Accuracy of **1.00**, and,
